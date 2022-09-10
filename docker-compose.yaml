@@ -1,36 +1,14 @@
 version: "3.3"
 
 services:
-  strapi:
-    image: strapi/strapi
-    volumes:
-      - strapi:/srv/app
-    restart: always
-    expose:
-      - 1337
-    environment:
-      DATABASE_CLIENT: mongo
-      DATABASE_NAME: portfolio
-      DATABASE_HOST: mongodb_container
-      DATABASE_PORT: 27017
-      DATABASE_USERNAME: $(DATABASE_USERNAME)
-      DATABASE_PASSWORD: $(DATABASE_PASSWORD)
-      VIRTUAL_HOST: strapi.timosur.com
-      VIRTUAL_PORT: 1337
-      LETSENCRYPT_HOST: strapi.timosur.com
-      LETSENCRYPT_EMAIL: strapi@timosur.com
-    networks:
-      - jwilder
-      - mongodb
-
   portfolio:
     image: registry.timosur.com/portfolio
     environment:
       VIRTUAL_HOST: timosur.com
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: timosur.com
-      LETSENCRYPT_EMAIL: info@timosur.com
-      NEXT_PUBLIC_STRAPI_URL: https://strapi.timosur.com
+      LETSENCRYPT_EMAIL: dev@timosur.com
+      NEXT_PUBLIC_COCKPIT_URL: https://cockpit.timosur.com
     restart: always
     expose:
       - 3000
@@ -38,12 +16,6 @@ services:
       - jwilder
 
 networks:
-  mongodb:
-    external:
-      name: mongodb_default
   jwilder:
     external: 
       name: jwilder-proxy
-
-volumes: 
-  strapi:
