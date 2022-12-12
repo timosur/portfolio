@@ -1,3 +1,3 @@
 docker-compose down
-docker build -t registry.timosur.com/finance .
+docker build -t timosur-portfolio .
 docker-compose up -d

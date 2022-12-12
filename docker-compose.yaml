@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   portfolio:
-    image: registry.timosur.com/portfolio
+    image: timosur-portfolio
     environment:
       VIRTUAL_HOST: timosur.com
       VIRTUAL_PORT: 3000
