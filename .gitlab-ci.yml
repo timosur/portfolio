@@ -1,6 +1,9 @@
 stages:
 - deploy_web
 
+on:
+  push:
+
 deploy_web:
   stage: build-deploy-web
   image: docker/compose:latest
