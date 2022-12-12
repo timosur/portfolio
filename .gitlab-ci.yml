@@ -3,6 +3,8 @@ stages:
 
 on:
   push:
+    branches:
+      - 'master'
 
 deploy_web:
   stage: build-deploy-web
