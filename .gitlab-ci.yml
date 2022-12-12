@@ -1,0 +1,12 @@
+stages:
+- deploy_web
+
+deploy_web:
+  stage: build-deploy-web
+  image: docker/compose:latest
+  tags:
+    - local-script
+    - surcloud
+  script:
+    - chmod u+x build-run.sh
+    - ./build-run.sh
