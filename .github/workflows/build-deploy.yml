@@ -1,3 +1,5 @@
+name: build-deploy
+
 on:
   push:
     branches:
@@ -5,10 +7,9 @@ on:
 
 jobs:
   deploy_web:
-    image: docker/compose:latest
-    tags:
-      - local-script
-      - surcloud
+    runs-on: surcloud
+    container:
+      image: docker/compose:latest
     steps:
       - run: |
           chmod u+x build-run.sh
