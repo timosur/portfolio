@@ -10,6 +10,6 @@ jobs:
       - local-script
       - surcloud
     steps:
-      run: |
-        chmod u+x build-run.sh
-        ./build-run.sh
+      - run: |
+          chmod u+x build-run.sh
+          ./build-run.sh
