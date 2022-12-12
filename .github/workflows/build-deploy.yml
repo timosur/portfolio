@@ -1,17 +1,15 @@
-stages:
-- deploy_web
-
 on:
   push:
     branches:
       - 'master'
 
-deploy_web:
-  stage: build-deploy-web
-  image: docker/compose:latest
-  tags:
-    - local-script
-    - surcloud
-  script:
-    - chmod u+x build-run.sh
-    - ./build-run.sh
+jobs:
+  deploy_web:
+    image: docker/compose:latest
+    tags:
+      - local-script
+      - surcloud
+    steps:
+      run: |
+        chmod u+x build-run.sh
+        ./build-run.sh
