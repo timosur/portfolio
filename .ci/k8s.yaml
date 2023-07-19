@@ -1,0 +1,63 @@
+# k8s.yaml for deployment portolio app
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portolio
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portolio-deployment
+  namespace: portolio
+  labels:
+    app: portolio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portolio
+  template:
+    metadata:
+      labels:
+        app: portolio
+    spec:
+      containers:
+      - name: portolio
+        image: registry.timosur.com/portolio:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+      imagePullSecrets:
+      - name: registry-timosur-com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portolio-service
+  namespace: portolio
+spec:
+  type: ClusterIP
+  selector:
+    app: portolio
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portolio-ingress
+  namespace: portolio
+spec:
+  rules:
+  - host: timosur.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: portolio-service
+            port:
+              number: 3000
