@@ -1,11 +1,9 @@
 'use client'
 
 import React from 'react';
+// @ts-ignore.
 import Typed from 'typed.js';
 import MyParticles from './components/Particles';
-
-// Import the typings for typed.js
-
 
 export default function Home() {
   const title = React.useRef(null);
