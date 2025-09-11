@@ -22,40 +22,17 @@ WORKDIR /app
 COPY --from=deps --link /app/node_modules ./node_modules
 COPY --link  . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build
 
-RUN yarn build
+# Production image, serve static files with nginx
+FROM nginx:alpine AS runner
 
-# If using npm comment out above and use below instead
-# RUN npm run build
+# Copy the built app to nginx html directory
+COPY --from=builder --link /app/dist /usr/share/nginx/html
 
-# Production image, copy all the files and run next
-FROM base AS runner
-WORKDIR /app
+# Copy custom nginx config if you need it
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+EXPOSE 80
 
-RUN \
-  addgroup --system --gid 1001 nodejs; \
-  adduser --system --uid 1001 nextjs
-
-COPY --from=builder --link /app/public ./public
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --link --chown=1001:1001 /app/.next/standalone ./
-COPY --from=builder --link --chown=1001:1001 /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT 3000
-ENV HOSTNAME localhost
-
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
